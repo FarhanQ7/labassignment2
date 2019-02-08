@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "CBLAS/include/cblas.h"
 #include <stdlib.h>
-
+#include <time.h>
 
 
 void init_matrix(int n, double* A){
@@ -33,7 +33,7 @@ void unoptimized_dgemm(int n, double* A, double* B , double* C ){
 			double cij = C[i+j*n]; 
 			for( k=0; k<n; k++){
 
-				cij+= A[i+k*n]* B[k+j*n]; 
+			cij+= A[i+k*n]* B[k+j*n]; 
 			}
 
 			C[i+j*n] = cij;
@@ -78,13 +78,30 @@ int main()
   double * admat2 = &mat2;
   double * admat3 = &mat3;
   
-  init_matrix(5, admat1);
-  init_matrix(5, admat2);
-  init_matrix(5, admat3);
 
+  init_matrix(10, admat1);
+  init_matrix(10, admat2);
+  init_matrix(10, admat3);
   unoptimized_dgemm(10, admat1,admat2,admat3);
-  compare_matrix(10, admat1,admat2); 
+ double mat4[100];
+ double mat5[100];
+ double mat6[100];
+ double *(admat4) = &mat4;
+ double * admat5 = &mat5;
+ double * admat6 = &mat6;
 
+ init_matrix(10, admat4);
+ init_matrix(10, admat5);
+ init_matrix(10, admat6);
+
+  CBLAS_ORDER order = CblasColMajor;
+  CBLAS_TRANSPOSE transA = CblasNoTrans;
+  CBLAS_TRANSPOSE transB = CblasNoTrans;
+ 
+//  cblas_dgemm(10,admat4,admat5,admat6);
+ cblas_dgemm(order,transA,transB, 10, 10, 1 ,1.0,admat4,10 ,admat5, 1 ,0.0,admat6, 10);
+
+ compare_matrix(10, admat3,admat6); 
 
 	   
 }
