@@ -4,20 +4,20 @@ LINKER     = gfortran
 CCFLAGS    = -O1 -mavx #-Q --help=optimizers
 LDFLAGS    = 
 
-LAPACKHOME = /home/user/lapack-3.8.0
+LAPACKHOME = /home/ffquresh/lapack-3.8.0
 INCPATH    =  -I$(LAPACKHOME)/CBLAS/include
 LIBS       =  -L$(LAPACKHOME) -lcblas -lrefblas 
 
 
 ## Files
 OBJECTS = c_timer.o lab3.o 
-TARGET  = lab3 SKYLAKEX NO_AVX512=1
+TARGET  = lab3
 
 
 ## Implicit rules
 .SUFFIXES: .c
-	.c.o:
-		$(CC) -c  $(CCFLAGS) $(INCPATH) $<
+.c.o:
+	$(CC) -c  $(CCFLAGS) $(INCPATH) $<
 
 
 ## Build rules
@@ -25,9 +25,9 @@ all: $(TARGET)
 
 
 $(TARGET): $(OBJECTS)
-		$(LINKER) -o $@  $(OBJECTS)  $(CCFLAGS) $(LDFLAGS) $(LIBS)
+	$(LINKER) -o $@  $(OBJECTS)  $(CCFLAGS) $(LDFLAGS) $(LIBS)
 
 clean:
-		rm -f $(OBJECTS) $(TARGET)
-			rm -f *~ core
+	rm -f $(OBJECTS) $(TARGET)
+	rm -f *~ core
 
